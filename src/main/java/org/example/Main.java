@@ -1,5 +1,7 @@
 package org.example;
 
+import java.sql.SQLException;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -43,6 +45,7 @@ public class Main {
 
         }
         ////////////////////////////////////////////////////////////
+        //// String rušiavimas
 
         System.out.println();
         System.out.println("String darbas");
@@ -56,6 +59,8 @@ public class Main {
         StringSort.irasytiNaujaIFaila(stringai,ORDERSTRINGORIGINAL);
 
         ////////////////////////////////////////////////////////////////
+        //// Failu nuskaitymas string
+
 
         String[] StringStringPath = StringSort.getFailuSarasas(DIRECTORY);
 
@@ -65,10 +70,10 @@ public class Main {
             System.out.println(s);
         }
 
-        StringSort[] StringFailai = StringSort.listTextAndCsvFiles(DIRECTORY);
+        StringSort[] stringSortFailai = StringSort.listTextAndCsvFiles(DIRECTORY);
         System.out.println();
         System.out.println("Nuskaityti:");
-        for(StringSort p : StringFailai) {
+        for(StringSort p : stringSortFailai) {
             System.out.println(p.getName());
             System.out.println(p.getPath());
             System.out.println(p.getFileSize());
@@ -78,8 +83,14 @@ public class Main {
 
         }
 
+        ////////////////////////////////////////////////////////////////
+        //// SEND TO MYSQLDATA
+
+        for(int i = 0; i < stringSortFailai.length; i++){
+
+           SendToMySQLDataBase.createTable(stringSortFailai[i].getName().split("\\.")[0]);
+            SendToMySQLDataBase.fillTable(stringSortFailai[i].getName().split("\\.")[0],stringSortFailai[i].getMasyvas());
+        }
 
     }
-
-
 }
